@@ -21,13 +21,13 @@ export default defineConfig({
     headless: true,
   },
 
-  projects: [
-    /*{
+  projects: process.env.DOCKER_ENV === 'true' ? [
+    {
       name: 'chromium',
       use: { ...devices['Desktop Chrome'] },
     },
-
-    {
+  ] : [
+    /*{
       name: 'firefox',
       use: { ...devices['Desktop Firefox'] },
     },

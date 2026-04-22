@@ -1,0 +1,12 @@
+services:
+  playwright:
+    build: .
+    ipc: host
+    env_file:
+      - .env
+    environment:
+      - DOCKER_ENV=true
+      - CI=true
+    volumes:
+      - ./playwright-report:/app/playwright-report
+      - ./test-results:/app/test-results
