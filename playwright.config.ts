@@ -18,6 +18,7 @@ export default defineConfig({
   use: {
     trace: 'on',
     screenshot: 'on',
+    headless: true,
   },
 
   projects: [
