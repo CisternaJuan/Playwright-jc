@@ -1,18 +1,13 @@
 pipeline {
     options {
         buildDiscarder(logRotator(
-            numToKeepStr:        '5',
-            artifactNumToKeepStr: '2',
-            daysToKeepStr:       '15'
+            numToKeepStr:         '20',
+            artifactNumToKeepStr: '5',
+            daysToKeepStr:        '30'
         ))
     }
 
-    agent {
-        docker {
-            image 'mcr.microsoft.com/playwright:v1.59.1-noble'
-            args '--ipc=host'
-        }
-    }
+    agent any
 
     environment {
         CI         = 'true'
@@ -23,12 +18,12 @@ pipeline {
         stage('Install') {
             steps {
                 sh 'npm ci'
+                sh 'npx playwright install --with-deps chromium'
             }
         }
 
         stage('Test') {
             steps {
-                // El archivo .env se inyecta como credencial "Secret file" en Jenkins
                 withCredentials([file(credentialsId: 'playwright-env-file', variable: 'ENV_FILE')]) {
                     sh 'cp $ENV_FILE .env'
                     sh 'npx playwright test'
