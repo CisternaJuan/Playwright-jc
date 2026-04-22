@@ -6,7 +6,7 @@ on:
     branches: [ main, develop ]
 jobs:
   test:
-    timeout-minuts: 60
+    timeout-minutes: 60
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v5
