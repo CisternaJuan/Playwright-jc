@@ -4,21 +4,23 @@ import path from 'node:path';
 
 dotenv.config({ path: path.resolve(__dirname, '.env') });
 
-/**
- * See https://playwright.dev/docs/test-configuration.
- */
 export default defineConfig({
     testDir: './tests',
     fullyParallel: true,
     forbidOnly: !!process.env.CI,
     retries: process.env.CI ? 2 : 0,
     workers: process.env.CI ? 1 : undefined,
-    reporter: 'html',
-    /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
+    timeout: 30_000,
+
+    reporter: [
+        ['html', { outputFolder: 'playwright-report' }],
+        ['list'],
+    ],
     use: {
         baseURL: process.env.BASE_URL,
         trace: 'on',
-        screenshot: 'on',
+        screenshot: 'only-on-failure',
+        video: 'retain-on-failure',
         headless: true,
     },
 
