@@ -1,6 +1,7 @@
 import { test as base } from '@playwright/test'
 import { LoginPage } from '../pages/LoginPage'
 import { InventoryPage } from '../pages/InventoryPage'
+import { TestUsers } from '../data/users'
 
 type CustonFixtures = {
     loginPage: LoginPage;
@@ -22,7 +23,7 @@ export const test = base.extend<CustonFixtures>({
         const loginPage = new LoginPage(page);
 
         await loginPage.navigate('/');
-        await loginPage.login(process.env.USERNAME!, process.env.PASSWORD!);
+        await loginPage.login(TestUsers.standard.username, TestUsers.standard.password);
         await loginPage.assertLoginSuccess();
 
         await use(new InventoryPage(page));

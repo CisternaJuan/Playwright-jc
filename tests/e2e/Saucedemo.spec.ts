@@ -1,3 +1,4 @@
+import { TestUsers } from '../../data/users';
 import { test } from '../../fixtures';
 
 test.describe('Saucedemo - Flujo de compra', () => {
@@ -5,7 +6,7 @@ test.describe('Saucedemo - Flujo de compra', () => {
     test('Login exitoso', async ({ loginPage}) => {
 
         await loginPage.navigate('/');
-        await loginPage.login(process.env.USERNAME!, process.env.PASSWORD!);
+        await loginPage.login(TestUsers.standard.username, TestUsers.standard.password);
         await loginPage.assertLoginSuccess();
     });
 
