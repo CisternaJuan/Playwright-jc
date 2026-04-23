@@ -1,26 +1,24 @@
-import { test } from '@playwright/test';
-import { LoginPage } from '../../pages/LoginPage';
-import { InventoryPage } from '../../pages/InventoryPage';
+import { test } from '../../fixtures';
 
-test('Test Pag Saucedemo', async ({ page }) => {
+test.describe('Saucedemo - Flujo de compra', () => {
+    
+    test('Login exitoso', async ({ loginPage}) => {
 
-  const loginPage = new LoginPage(page);
-  const inventoryPage = new InventoryPage(page);
+        await loginPage.navigate('/');
+        await loginPage.login(process.env.USERNAME!, process.env.PASSWORD!);
+        await loginPage.assertLoginSuccess();
+    });
 
-  // Navego a SauceDemo
-  await loginPage.navigate('/');
+    test('Agregar producto aleatorio al carro', async ({ authenticatedPage }) => {
 
-  //Login
-  await loginPage.login('standard_user','secret_sauce');
-  await loginPage.assertLoginSuccess();
+        const producto = await authenticatedPage.getRandomProduct();
+        console.log(`Nombre: ${producto.nombre} \nDescripcion: ${producto.descripcion} \nPrecio: ${producto.precio}`);
 
-  // Producto aleatorio
-  const producto = await inventoryPage.getRandomProduct();
-  console.log(`Nombre: ${producto.nombre} \nDescripcion: ${producto.descripcion} \nPrecio: ${producto.precio}`);  
+        // Agrego al carrito
+        await authenticatedPage.addToCart(producto.elemento);
 
-  // Agrego al carrito
-  await inventoryPage.addToCart(producto.elemento);
+        // Verifico carrito
+        await authenticatedPage.assertCartCount('1');
+    })
 
-  // Verifico carrito
-  await inventoryPage.assertCartCount('1');
 });
